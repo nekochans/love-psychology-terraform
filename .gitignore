@@ -7,3 +7,7 @@
 
 # .tfvars files
 *.tfvars
+
+# IDEA setting files
+.idea
+love-psychology-terraform.iml
