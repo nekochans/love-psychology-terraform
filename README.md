@@ -37,3 +37,18 @@ aws_secret_access_key = アクセスキーシークレット
 Terraformは様々なAWSリソースを作成します。
 
 よってアクセス権を絞るのは非常に難しいと思うので `AdministratorAccess` を与えるのが無難だと思います。
+
+## 初期設定
+
+`docker-compose up -d` でTerraformのコンテナを立ち上げます。
+
+Terraformの初期化を行います。以下の手順で初期化スクリプトを実行して下さい。
+
+```
+chmod 755 terraform-init-stg.sh
+docker-compose exec terraform ./terraform-init-stg.sh
+```
+
+`docker-compose exec terraform sh` でコンテナの中に入ります。
+
+以降、Terraformの実行はコンテナの中で行います。
