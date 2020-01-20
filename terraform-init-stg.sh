@@ -1,11 +1,16 @@
 #!/bin/sh
 
-cd /app/love-psychology-terraform/providers/aws/environments/10-network
+tfstateDirList='
+/app/love-psychology-terraform/providers/aws/environments/10-network
+/app/love-psychology-terraform/providers/aws/environments/20-bastion
+'
 
-pwd
-
-terraform init
-
-terraform workspace select stg
-
-terraform workspace list
+for tfstateDir in ${tfstateDirList}; do
+  echo "$tfstateDir"
+  # shellcheck disable=SC2164
+  cd "$tfstateDir"
+  pwd
+  terraform init
+  terraform workspace select stg
+  terraform workspace list
+done
