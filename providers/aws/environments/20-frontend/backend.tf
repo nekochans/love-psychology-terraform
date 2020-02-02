@@ -1,6 +1,4 @@
 terraform {
-  required_version = "=0.12.19"
-
   backend "s3" {
     bucket  = "stg-love-psychology-tfstate"
     key     = "frontend/terraform.tfstate"
