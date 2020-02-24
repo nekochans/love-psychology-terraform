@@ -30,16 +30,9 @@ variable "nat_instance" {
   default = {
     "default.name"          = "prod-love-psychology-nat"
     "stg.name"              = "stg-love-psychology-nat"
-    "default.ami"           = "ami-011facbea5ec0363b"
+    "default.ami"           = "ami-0af1df87db7b650f4"
     "default.instance_type" = "t2.micro"
     "default.volume_type"   = "gp2"
     "default.volume_size"   = "30"
   }
-}
-
-// TODO AWSアカウントがステージング本番で違うので後で環境変数として渡すように改修する
-variable "ssh_public_key_path" {
-  type = string
-
-  default = "~/.ssh/stg_love_psychology_aws.pem.pub"
 }

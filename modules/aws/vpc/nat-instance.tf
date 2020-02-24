@@ -54,11 +54,6 @@ resource "aws_security_group_rule" "https_from_vpc_to_nat_instance" {
   cidr_blocks       = [aws_vpc.vpc.cidr_block]
 }
 
-resource "aws_key_pair" "nat_ssh_key_pair" {
-  public_key = file(var.ssh_public_key_path)
-  key_name   = "${terraform.workspace}-love-psychology-nat-ssh-key"
-}
-
 data "aws_iam_policy_document" "nat_instance_trust_relationship" {
   statement {
     effect = "Allow"
@@ -72,30 +67,14 @@ data "aws_iam_policy_document" "nat_instance_trust_relationship" {
   }
 }
 
-data "aws_iam_policy_document" "nat_instance_policy" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "cloudwatch:PutMetricData",
-      "cloudwatch:GetMetricStatistics",
-      "cloudwatch:ListMetrics",
-      "ec2:DescribeTags",
-    ]
-
-    resources = ["*"]
-  }
-}
-
 resource "aws_iam_role" "nat_instance_role" {
   name               = "${terraform.workspace}-love-psychology-nat-instance-default-role"
   assume_role_policy = data.aws_iam_policy_document.nat_instance_trust_relationship.json
 }
 
-resource "aws_iam_role_policy" "nat_instance_role_policy" {
-  name   = "${terraform.workspace}-love-psychology-nat-instance-role-policy"
-  role   = aws_iam_role.nat_instance_role.id
-  policy = data.aws_iam_policy_document.nat_instance_policy.json
+resource "aws_iam_role_policy_attachment" "attachment_amazon_ec2_role_for_ssm" {
+  role       = aws_iam_role.nat_instance_role.id
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
 }
 
 resource "aws_iam_instance_profile" "nat_instance_profile" {
@@ -130,7 +109,6 @@ resource "aws_instance" "nat_instance_1c" {
     )
   }
 
-  key_name               = aws_key_pair.nat_ssh_key_pair.id
   subnet_id              = aws_subnet.public_1c.id
   vpc_security_group_ids = [aws_security_group.nat_instance.id]
 
