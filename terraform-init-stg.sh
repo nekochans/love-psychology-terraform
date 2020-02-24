@@ -3,7 +3,6 @@
 tfstateDirList='
 /app/love-psychology-terraform/providers/aws/environments/10-network
 /app/love-psychology-terraform/providers/aws/environments/11-acm
-/app/love-psychology-terraform/providers/aws/environments/20-bastion
 /app/love-psychology-terraform/providers/aws/environments/20-frontend
 '
 
