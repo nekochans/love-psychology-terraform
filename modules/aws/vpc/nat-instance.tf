@@ -27,6 +27,24 @@ resource "aws_security_group" "nat_instance" {
   }
 }
 
+resource "aws_security_group_rule" "http_from_vpc_to_nat_instance" {
+  security_group_id = aws_security_group.nat_instance.id
+  type              = "ingress"
+  from_port         = "80"
+  to_port           = "80"
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.vpc.cidr_block]
+}
+
+resource "aws_security_group_rule" "https_from_vpc_to_nat_instance" {
+  security_group_id = aws_security_group.nat_instance.id
+  type              = "ingress"
+  from_port         = "443"
+  to_port           = "443"
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.vpc.cidr_block]
+}
+
 data "aws_iam_policy_document" "nat_instance_trust_relationship" {
   statement {
     effect = "Allow"
